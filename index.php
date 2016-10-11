@@ -13,6 +13,20 @@ $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 format_print_r($results);
  ?> -->
 
+  <?php
+    if (isset($_POST['day1_notes'])) {
+      $day1_notes = $_POST['day1_notes'];
+
+      $sql = "
+        INSERT INTO records (day1_notes) VALUES (:day1_notes)
+      ";
+
+      $stmt = $dbh->prepare($sql);
+      $stmt->bindParam(':day1_notes', $day1_notes);
+      $stmt->execute();
+    }
+  ?>
+
 
 <!DOCTYPE html>
 <html>
@@ -60,9 +74,9 @@ format_print_r($results);
        <h4>Total time practiced this week: </h4>
      </div>
 
-     <div class="container">
-       <div class="row">
-         <div class="col-md-8">
+
+
+     <form name="save_record" method="post">
      <h3 class="day">Monday</h3>
 <div>
   <p class="time">
@@ -82,7 +96,7 @@ format_print_r($results);
 </div>
 <p class="what">
   <label for="textarea">What practiced:</label>
-<textarea class="textarea" rows="2" cols="21"></textarea>
+<textarea name="day1_notes" class="textarea" rows="2" cols="21"></textarea>
 </p>
 
 
@@ -226,12 +240,8 @@ format_print_r($results);
   <label for="textarea">What practiced:</label>
 <textarea class="textarea" rows="2" cols="21"></textarea>
 </p>
-    </div>
-  </div>
-</div>
-
-
-<input name="Save" type="submit" class="button" value="Save" onclick="Save" />
+<input name="submit" type="submit" value="submit" />
+</form>
 
 
 
