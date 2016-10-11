@@ -1,0 +1,51 @@
+
+
+.welcome h1{
+  color: blue;
+  font-family: 'PT Serif', serif;
+  padding: 30px;
+  font-size: 50px;
+  text-shadow: 2px 2px black;
+}
+
+.welcome {
+  text-align: center;
+}
+
+.signIn {
+  padding-bottom: 40px;
+}
+.time {
+  display: inline-block;
+  font-weight: bold;
+}
+
+.what {
+  display: inline;
+}
+
+.border {
+  background-color: gold;
+  width: 80%;
+  margin: 0 auto;
+  padding-bottom: 60px;
+  border-radius: 20px;
+}
+
+.select {
+  font-size: 20px;
+  height: 30px;
+}
+
+
+.day {
+  padding-top: 20px;
+}
+
+.what * {
+  vertical-align: middle;
+}
+
+.container {
+  text-align: center;
+}
