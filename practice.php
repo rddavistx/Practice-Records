@@ -20,126 +20,80 @@ require_once 'bootstrap.php';
       $stmt->execute();
 
       $results = $stmt->fetch(PDO::FETCH_ASSOC);
+
       //check if results is empty. If so redirect to index
       if ( ! $results) {
         header('location: index.php');
         $msg = "Incorrect Student ID";
+
       }
 }
 
   ?>
 
   <?php
-    if (isset($_POST['day1_duration'])) {
+    if (isset($_POST['submit'])) {
+
       $day1_notes = $_POST['day1_notes'];
       $day1_duration = $_POST['day1_duration'];
+      $day2_notes = $_POST['day2_notes'];
+      $day2_duration = $_POST['day2_duration'];
+      $day3_notes = $_POST['day3_notes'];
+      $day3_duration = $_POST['day3_duration'];
+      $day4_notes = $_POST['day4_notes'];
+      $day4_duration = $_POST['day4_duration'];
+      $day5_notes = $_POST['day5_notes'];
+      $day5_duration = $_POST['day5_duration'];
+      $day6_notes = $_POST['day6_notes'];
+      $day6_duration = $_POST['day6_duration'];
+      $day7_notes = $_POST['day7_notes'];
+      $day7_duration = $_POST['day7_duration'];
+      $assigned_id = $_POST['assigned_id'];
+
+
 
       $sql = "
-        INSERT INTO records (day1_notes, day1_duration) VALUES (:day1_notes, :day1_duration)
+        INSERT INTO records (day1_notes, day1_duration, day2_notes, day2_duration, day3_notes, day3_duration, day4_notes, day4_duration, day5_notes, day5_duration, day6_notes, day6_duration, day7_notes, day7_duration, assigned_id) VALUES (:day1_notes, :day1_duration, :day2_notes, :day2_duration, :day3_notes, :day3_notes, :day4_notes, :day4_duration, :day5_notes, :day5_duration, :day6_notes, :day6_duration, :day7_notes, :day7_duration, :assigned_id)
       ";
 
-      $stmt = $dbh->prepare($sql);
-      $stmt->bindParam(':day1_notes', $day1_notes);
-      $stmt -> bindParam(':day1_duration', $day1_duration);
-      $stmt->execute();
+      try {
+        $stmt = $dbh->prepare($sql);
+        $stmt->bindParam(':day1_notes', $day1_notes);
+        $stmt->bindParam(':day1_duration', $day1_duration);
+        $stmt->bindParam(':day2_notes', $day2_notes);
+        $stmt->bindParam(':day2_duration', $day2_duration);
+        $stmt->bindParam(':day3_notes', $day3_notes);
+        $stmt->bindParam(':day3_duration', $day3_duration);
+        $stmt->bindParam(':day4_notes', $day4_notes);
+        $stmt->bindParam(':day4_duration', $day4_duration);
+        $stmt->bindParam(':day5_notes', $day5_notes);
+        $stmt->bindParam(':day5_duration', $day5_duration);
+        $stmt->bindParam(':day6_notes', $day6_notes);
+        $stmt->bindParam(':day6_duration', $day6_duration);
+        $stmt->bindParam(':day7_notes', $day7_notes);
+        $stmt->bindParam(':day7_duration', $day7_duration);
+        $stmt->bindParam(':assigned_id', $assigned_id);
+
+
+        $stmt->execute();
+
+
+        // $pdo = new PDO('mysql:host=localhost;dbname=practice_records;charset=utf8', 'localonly', 'localonly');
+        // $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        // $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+
+
+        // $pdo->prepare('INSERT INTO DoesNotExist (x) VALUES (?)');
+      }
+      catch(Exception $e) {
+          echo 'Exception -> ';
+          var_dump($e->getMessage());
+      }
+
+
     }
   ?>
 
-  <?php
-  if (isset($_POST['day2_duration'])) {
-    $day1_notes = $_POST['day2_notes'];
-    $day1_duration = $_POST['day2_duration'];
-
-    $sql = "
-      INSERT INTO records (day2_notes, day2_duration) VALUES (:day2_notes, :day2_duration)
-    ";
-
-    $stmt = $dbh->prepare($sql);
-    $stmt->bindParam(':day2_notes', $day2_notes);
-    $stmt -> bindParam(':day2_duration', $day2_duration);
-    $stmt->execute();
-  }
-  ?>
-
-  <?php
-  if (isset($_POST['day3_duration'])) {
-    $day1_notes = $_POST['day3_notes'];
-    $day1_duration = $_POST['day3_duration'];
-
-    $sql = "
-      INSERT INTO records (day3_notes, day3_duration) VALUES (:day3_notes, :day3_duration)
-    ";
-
-    $stmt = $dbh->prepare($sql);
-    $stmt->bindParam(':day3_notes', $day3_notes);
-    $stmt -> bindParam(':day3_duration', $day3_duration);
-    $stmt->execute();
-  }
-  ?>
-
-  <?php
-  if (isset($_POST['day4_duration'])) {
-    $day1_notes = $_POST['day4_notes'];
-    $day1_duration = $_POST['day4_duration'];
-
-    $sql = "
-      INSERT INTO records (day4_notes, day4_duration) VALUES (:day4_notes, :day4_duration)
-    ";
-
-    $stmt = $dbh->prepare($sql);
-    $stmt->bindParam(':day4_notes', $day4_notes);
-    $stmt -> bindParam(':day4_duration', $day4_duration);
-    $stmt->execute();
-  }
-  ?>
-
-  <?php
-  if (isset($_POST['day5_duration'])) {
-    $day1_notes = $_POST['day5_notes'];
-    $day1_duration = $_POST['day5_duration'];
-
-    $sql = "
-      INSERT INTO records (day5_notes, day5_duration) VALUES (:day5_notes, :day5_duration)
-    ";
-
-    $stmt = $dbh->prepare($sql);
-    $stmt->bindParam(':day5_notes', $day5_notes);
-    $stmt -> bindParam(':day5_duration', $day5_duration);
-    $stmt->execute();
-  }
-  ?>
-
-  <?php
-  if (isset($_POST['day6_duration'])) {
-    $day1_notes = $_POST['day6_notes'];
-    $day1_duration = $_POST['day6_duration'];
-
-    $sql = "
-      INSERT INTO records (day6_notes, day6_duration) VALUES (:day6_notes, :day6_duration)
-    ";
-
-    $stmt = $dbh->prepare($sql);
-    $stmt->bindParam(':day6_notes', $day6_notes);
-    $stmt -> bindParam(':day6_duration', $day6_duration);
-    $stmt->execute();
-  }
-  ?>
-
-  <?php
-  if (isset($_POST['day7_duration'])) {
-    $day1_notes = $_POST['day7_notes'];
-    $day1_duration = $_POST['day7_duration'];
-
-    $sql = "
-      INSERT INTO records (day7_notes, day7_duration) VALUES (:day7_notes, :day7_duration)
-    ";
-
-    $stmt = $dbh->prepare($sql);
-    $stmt->bindParam(':day7_notes', $day7_notes);
-    $stmt -> bindParam(':day7_duration', $day7_duration);
-    $stmt->execute();
-  }
-  ?>
 
 
 
@@ -175,11 +129,11 @@ require_once 'bootstrap.php';
          </p>
          <select class="select">
            <option value="week1">Week 1 (Sept. 5-11)</option>
-           <option value="week1">Week 2 (Sept. 12-18)</option>
-           <option value="week1">Week 3 (Sept. 19-25)</option>
-           <option value="week1">Week 4 (Sept. 26-Oct. 2)</option>
-           <option value="week1">Week 5 (Oct. 3-9)</option>
-           <option value="week1">Week 6 (Oct. 10-16)</option>
+           <option value="week2">Week 2 (Sept. 12-18)</option>
+           <option value="week3">Week 3 (Sept. 19-25)</option>
+           <option value="week4">Week 4 (Sept. 26-Oct. 2)</option>
+           <option value="week5">Week 5 (Oct. 3-9)</option>
+           <option value="week6">Week 6 (Oct. 10-16)</option>
          </select>
      </div>
    </div>
@@ -285,8 +239,8 @@ require_once 'bootstrap.php';
   <p class="time">
     Time Practiced:
   </p>
-  <select class="select">
-    <option name="day5_duration" selected="selected" value="0">Did not practice</option>
+  <select name="day5_duration" class="select">
+    <option  selected="selected" value="0">Did not practice</option>
     <option value="15">15 Minutes</option>
     <option value="30">30 Minutes</option>
     <option value="45">45 Minutes</option>
@@ -348,6 +302,8 @@ require_once 'bootstrap.php';
   <label for="textarea">What practiced:</label>
 <textarea name="day7_notes" class="textarea" rows="2" cols="21"></textarea>
 </p>
+<input type="hidden" name="assigned_id" value="<?php echo $_POST['assigned_id'] ?>">
+
 <input name="submit" type="submit" value="submit" />
 </form>
 
