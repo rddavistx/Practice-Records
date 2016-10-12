@@ -1,4 +1,6 @@
-
+body {
+  text-align: center;
+}
 
 .welcome h1{
   color: blue;
