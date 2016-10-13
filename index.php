@@ -22,7 +22,7 @@ require_once 'bootstrap.php'
       <div class="signIn">
         <h2>Please sign in</h2>
       </div>
-      <form action="practice.php" method="post">
+      <form action="practice.php" method="get">
 
         Student ID: <input type="text" name="assigned_id">
 
@@ -31,7 +31,7 @@ require_once 'bootstrap.php'
   <input type="submit">
 </form>
 
-  
+
 
   </div>
 </div>
