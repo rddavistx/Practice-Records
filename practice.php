@@ -3,6 +3,17 @@ ob_start();
 require_once 'bootstrap.php';
  ?>
 
+ <?php $sql = "
+   SELECT id, start_date
+   FROM weeks
+ ";
+ $stmt = $dbh->prepare($sql);
+ $stmt->execute();
+
+ $weeks = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+ $output = '';
+ ?>
 
 <?php
     if (isset($_POST['assigned_id'])) {
@@ -49,14 +60,14 @@ require_once 'bootstrap.php';
       $day7_notes = $_POST['day7_notes'];
       $day7_duration = $_POST['day7_duration'];
       $assigned_id = $_POST['assigned_id'];
-
+      $week_id = $_POST['week_id'];
 
 
       $sql = "
-        INSERT INTO records (day1_notes, day1_duration, day2_notes, day2_duration, day3_notes, day3_duration, day4_notes, day4_duration, day5_notes, day5_duration, day6_notes, day6_duration, day7_notes, day7_duration, assigned_id) VALUES (:day1_notes, :day1_duration, :day2_notes, :day2_duration, :day3_notes, :day3_notes, :day4_notes, :day4_duration, :day5_notes, :day5_duration, :day6_notes, :day6_duration, :day7_notes, :day7_duration, :assigned_id)
+        INSERT INTO records (day1_notes, day1_duration, day2_notes, day2_duration, day3_notes, day3_duration, day4_notes, day4_duration, day5_notes, day5_duration, day6_notes, day6_duration, day7_notes, day7_duration, assigned_id, week_id) VALUES (:day1_notes, :day1_duration, :day2_notes, :day2_duration, :day3_notes, :day3_notes, :day4_notes, :day4_duration, :day5_notes, :day5_duration, :day6_notes, :day6_duration, :day7_notes, :day7_duration, :assigned_id, :week_id)
       ";
 
-      try {
+
         $stmt = $dbh->prepare($sql);
         $stmt->bindParam(':day1_notes', $day1_notes);
         $stmt->bindParam(':day1_duration', $day1_duration);
@@ -73,24 +84,9 @@ require_once 'bootstrap.php';
         $stmt->bindParam(':day7_notes', $day7_notes);
         $stmt->bindParam(':day7_duration', $day7_duration);
         $stmt->bindParam(':assigned_id', $assigned_id);
-
+        $stmt->bindParam(':week_id', $week_id);
 
         $stmt->execute();
-
-
-        // $pdo = new PDO('mysql:host=localhost;dbname=practice_records;charset=utf8', 'localonly', 'localonly');
-        // $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        // $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
-
-
-        // $pdo->prepare('INSERT INTO DoesNotExist (x) VALUES (?)');
-      }
-      catch(Exception $e) {
-          echo 'Exception -> ';
-          var_dump($e->getMessage());
-      }
-
-
     }
   ?>
 
@@ -118,7 +114,7 @@ require_once 'bootstrap.php';
         include './name.php'
        ?>
 
-       <h3>Hello , <?php echo $results['first_name'] ?> welcome to practice records online</h3>
+       <h3>Hello,  <?php echo $results['first_name'] . " " . $results['last_name']?></h3>
       <div class="welcome">
        <h1>Welcome to Online Practice Record !</h1>
 
@@ -127,18 +123,19 @@ require_once 'bootstrap.php';
          <p class="select">
            Select week for practice
          </p>
-         <select class="select">
-           <option value="week1">Week 1 (Sept. 5-11)</option>
-           <option value="week2">Week 2 (Sept. 12-18)</option>
-           <option value="week3">Week 3 (Sept. 19-25)</option>
-           <option value="week4">Week 4 (Sept. 26-Oct. 2)</option>
-           <option value="week5">Week 5 (Oct. 3-9)</option>
-           <option value="week6">Week 6 (Oct. 10-16)</option>
+         <form name="save_record" action="practice.php" method="post">
+         <select name="week_id">
+           <option value="">- Select a week</option>
+
+            <?php foreach ($weeks as $week): ?>
+              <option value="<?php echo $week['id'] ?>"><?php echo $week['start_date'] ?></option>
+
+            <?php endforeach ?>
          </select>
      </div>
    </div>
 
-     <form name="save_record" method="post">
+
      <h3 class="day">Monday</h3>
 <div>
   <p class="time">

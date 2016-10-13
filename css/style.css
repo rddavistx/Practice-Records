@@ -39,9 +39,15 @@ body {
   height: 30px;
 }
 
+h3 {
+  font-size: 40px;
+  color:green;
+}
+
 
 .day {
   padding-top: 20px;
+  font-size: 20px;
 }
 
 .what * {
