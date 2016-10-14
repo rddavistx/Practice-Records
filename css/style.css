@@ -10,6 +10,15 @@ body {
   text-shadow: 2px 2px black;
 }
 
+.bottom {
+  background-color: red;
+  height: 300px;
+  width: 90%;
+  margin: 0 auto;
+  margin-top: 20px;
+  border-radius: 20px;
+}
+
 .welcome {
   text-align: center;
 }
@@ -56,4 +65,29 @@ h3 {
 
 .container {
   text-align: center;
+}
+
+#saved {
+  color: black;
+}
+
+#total {
+  color: red;
+
+}
+
+#sum {
+  color: black;
+  text-align: center;
+}
+
+#lastSave {
+  margin: 20px 20px;
+
+}
+
+#instructions {
+  color: black;
+  padding: 80px 0;
+  font-family: 'PT Sans', sans-serif;
 }

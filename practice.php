@@ -34,6 +34,7 @@
 
       //check if results is empty. If so redirect to index
       if ( ! $results) {
+
         header('location: index.php');
       }
     }
@@ -48,6 +49,8 @@
         FROM records
         WHERE assigned_id = :assigned_id
         AND week_id = :week_id
+        ORDER by id DESC
+        LIMIT 1
         ";
 
         $stmt = $dbh->prepare($sql);
@@ -80,7 +83,7 @@
 
 
       $sql = "
-        INSERT INTO records (day1_notes, day1_duration, day2_notes, day2_duration, day3_notes, day3_duration, day4_notes, day4_duration, day5_notes, day5_duration, day6_notes, day6_duration, day7_notes, day7_duration, assigned_id, week_id) VALUES (:day1_notes, :day1_duration, :day2_notes, :day2_duration, :day3_notes, :day3_notes, :day4_notes, :day4_duration, :day5_notes, :day5_duration, :day6_notes, :day6_duration, :day7_notes, :day7_duration, :assigned_id, :week_id)
+        INSERT INTO records (day1_notes, day1_duration, day2_notes, day2_duration, day3_notes, day3_duration, day4_notes, day4_duration, day5_notes, day5_duration, day6_notes, day6_duration, day7_notes, day7_duration, assigned_id, week_id) VALUES (:day1_notes, :day1_duration, :day2_notes, :day2_duration, :day3_notes, :day3_duration, :day4_notes, :day4_duration, :day5_notes, :day5_duration, :day6_notes, :day6_duration, :day7_notes, :day7_duration, :assigned_id, :week_id)
       ";
 
 
@@ -103,6 +106,8 @@
         $stmt->bindParam(':week_id', $week_id);
 
         $stmt->execute();
+        echo '<h3 id="saved">Practice Record Saved ! </h3>';
+        header( "refresh:5; url=index.php" );
     }
 ?>
 
@@ -120,16 +125,13 @@
     <link href="https://fonts.googleapis.com/css?family=PT+Serif:700" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
   </head>
+
   <body>
-
-
-
        <h3>Hello <?php echo $results['first_name']  ?> <?php echo $results['last_name']  ?></h3>
   <div class="welcome">
        <h1>Welcome to Online Practice Record !</h1>
-  <div>
-
-    <form name="save_record" action="practice.php?week_id=<?php echo $_GET['week_id'] ?>&amp;assigned_id=<?php echo $_GET['assigned_id'] ?>" method="post">
+    <div>
+      <form name="save_record" action="practice.php?week_id=<?php echo $_GET['week_id'] ?>&amp;assigned_id=<?php echo $_GET['assigned_id'] ?>" method="post">
       <select name="week_id" id="week_id">
          <option value="">- Select a week</option>
           <?php foreach ($weeks as $week): ?>
@@ -141,10 +143,13 @@
 
 <?php if (isset($_GET['week_id'])):  ?>
 
-<h3>Total time practiced this week:</h3>
+    <h3 id="total">Total time practiced this week:<input type="text" id="sum" size="3" /> minutes</h3>
+
+
+
 
         <h3 class="day">Monday</h3>
-      <div>
+    <div>
         <p class="time">
           Time Practiced:
         </p>
@@ -159,151 +164,161 @@
           <option value="105" <?php echo isset($weekResults['day1_duration']) && $weekResults['day1_duration'] == '105' ? 'selected="selected"' : '' ?>>1 Hour and 45 Minutes</option>
           <option value="120" <?php echo isset($weekResults['day1_duration']) && $weekResults['day1_duration'] == '120' ? 'selected="selected"' : '' ?>>2 Hours</option>
         </select>
-      </div>
-<p class="what">
-  <label for="textarea">What practiced:</label>
-<textarea name="day1_notes" class="textarea" rows="2" cols="21"><?php echo isset($weekResults['day1_notes']) ? $weekResults['day1_notes'] : '' ?></textarea>
-</p>
+    </div>
+        <p class="what">
+            <label for="textarea">What practiced:</label>
+            <textarea name="day1_notes" class="textarea" rows="2" cols="21"><?php echo isset($weekResults['day1_notes']) ? $weekResults['day1_notes'] : '' ?></textarea>
+        </p>
 
 
-  <h3 class="day">Tuesday</h3>
-<div>
-  <p class="time">
-    Time Practiced:
-  </p>
-  <select name="day2_duration"  class="select">
-    <option selected="selected" value="0">Did not practice</option>
-    <option value="15" <?php echo isset($weekResults['day2_duration']) && $weekResults['day2_duration'] == '15' ? 'selected="selected"' : '' ?>>15 Minutes</option>
-    <option value="30" <?php echo isset($weekResults['day2_duration']) && $weekResults['day2_duration'] == '30' ? 'selected="selected"' : '' ?>>30 Minutes</option>
-    <option value="45" <?php echo isset($weekResults['day2_duration']) && $weekResults['day2_duration'] == '45' ? 'selected="selected"' : '' ?>>45 Minutes</option>
-    <option value="60" <?php echo isset($weekResults['day2_duration']) && $weekResults['day2_duration'] == '60' ? 'selected="selected"' : '' ?>>1 Hour</option>
-    <option value="75" <?php echo isset($weekResults['day2_duration']) && $weekResults['day2_duration'] == '75' ? 'selected="selected"' : '' ?>>1 Hour and 15 Minutes</option>
-    <option value="90" <?php echo isset($weekResults['day2_duration']) && $weekResults['day2_duration'] == '90' ? 'selected="selected"' : '' ?>>1 Hour and 30 Minutes</option>
-    <option value="105" <?php echo isset($weekResults['day2_duration']) && $weekResults['day2_duration'] == '105' ? 'selected="selected"' : '' ?>>1 Hour and 45 Minutes</option>
-    <option value="120" <?php echo isset($weekResults['day2_duration']) && $weekResults['day2_duration'] == '120' ? 'selected="selected"' : '' ?>>2 Hours</option>
-  </select>
-</div>
-<p class="what">
-  <label for="textarea">What practiced:</label>
-<textarea name="day2_notes" class="textarea" rows="2" cols="21"><?php echo isset($weekResults['day2_notes']) ? $weekResults['day2_notes'] : '' ?></textarea>
-</p>
+        <h3 class="day">Tuesday</h3>
+    <div>
+        <p class="time">
+            Time Practiced:
+        </p>
+        <select name="day2_duration"  class="select">
+          <option selected="selected" value="0">Did not practice</option>
+          <option value="15" <?php echo isset($weekResults['day2_duration']) && $weekResults['day2_duration'] == '15' ? 'selected="selected"' : '' ?>>15 Minutes</option>
+          <option value="30" <?php echo isset($weekResults['day2_duration']) && $weekResults['day2_duration'] == '30' ? 'selected="selected"' : '' ?>>30 Minutes</option>
+          <option value="45" <?php echo isset($weekResults['day2_duration']) && $weekResults['day2_duration'] == '45' ? 'selected="selected"' : '' ?>>45 Minutes</option>
+          <option value="60" <?php echo isset($weekResults['day2_duration']) && $weekResults['day2_duration'] == '60' ? 'selected="selected"' : '' ?>>1 Hour</option>
+          <option value="75" <?php echo isset($weekResults['day2_duration']) && $weekResults['day2_duration'] == '75' ? 'selected="selected"' : '' ?>>1 Hour and 15 Minutes</option>
+          <option value="90" <?php echo isset($weekResults['day2_duration']) && $weekResults['day2_duration'] == '90' ? 'selected="selected"' : '' ?>>1 Hour and 30 Minutes</option>
+          <option value="105" <?php echo isset($weekResults['day2_duration']) && $weekResults['day2_duration'] == '105' ? 'selected="selected"' : '' ?>>1 Hour and 45 Minutes</option>
+          <option value="120" <?php echo isset($weekResults['day2_duration']) && $weekResults['day2_duration'] == '120' ? 'selected="selected"' : '' ?>>2 Hours</option>
+        </select>
+    </div>
+        <p class="what">
+          <label for="textarea">What practiced:</label>
+          <textarea name="day2_notes" class="textarea" rows="2" cols="21"><?php echo isset($weekResults['day2_notes']) ? $weekResults['day2_notes'] : '' ?></textarea>
+        </p>
 
 
-<h3 class="day">Wednesday</h3>
-<div>
-  <p class="time">
-    Time Practiced:
-  </p>
-  <select name="day3_duration"  class="select">
-    <option value="15" <?php echo isset($weekResults['day3_duration']) && $weekResults['day3_duration'] == '15' ? 'selected="selected"' : '' ?>>15 Minutes</option>
-    <option value="30" <?php echo isset($weekResults['day3_duration']) && $weekResults['day3_duration'] == '30' ? 'selected="selected"' : '' ?>>30 Minutes</option>
-    <option value="45" <?php echo isset($weekResults['day3_duration']) && $weekResults['day3_duration'] == '45' ? 'selected="selected"' : '' ?>>45 Minutes</option>
-    <option value="60" <?php echo isset($weekResults['day3_duration']) && $weekResults['day3_duration'] == '60' ? 'selected="selected"' : '' ?>>1 Hour</option>
-    <option value="75" <?php echo isset($weekResults['day3_duration']) && $weekResults['day3_duration'] == '75' ? 'selected="selected"' : '' ?>>1 Hour and 15 Minutes</option>
-    <option value="90" <?php echo isset($weekResults['day3_duration']) && $weekResults['day3_duration'] == '90' ? 'selected="selected"' : '' ?>>1 Hour and 30 Minutes</option>
-    <option value="105" <?php echo isset($weekResults['day3_duration']) && $weekResults['day3_duration'] == '105' ? 'selected="selected"' : '' ?>>1 Hour and 45 Minutes</option>
-    <option value="120" <?php echo isset($weekResults['day3_duration']) && $weekResults['day3_duration'] == '120' ? 'selected="selected"' : '' ?>>2 Hours</option>
-  </select>
-</div>
-<p class="what">
-  <label for="textarea">What practiced:</label>
-<textarea name="day3_notes" class="textarea" rows="2" cols="21"><?php echo isset($weekResults['day3_notes']) ? $weekResults['day3_notes'] : '' ?></textarea></p>
-
-
-
-<h3 class="day">Thursday</h3>
-<div>
-  <p class="time">
-    Time Practiced:
-  </p>
-  <select name="day4_duration"  class="select">
-    <option value="15" <?php echo isset($weekResults['day4_duration']) && $weekResults['day4_duration'] == '15' ? 'selected="selected"' : '' ?>>15 Minutes</option>
-    <option value="30" <?php echo isset($weekResults['day4_duration']) && $weekResults['day4_duration'] == '30' ? 'selected="selected"' : '' ?>>30 Minutes</option>
-    <option value="45" <?php echo isset($weekResults['day4_duration']) && $weekResults['day4_duration'] == '45' ? 'selected="selected"' : '' ?>>45 Minutes</option>
-    <option value="60" <?php echo isset($weekResults['day4_duration']) && $weekResults['day4_duration'] == '60' ? 'selected="selected"' : '' ?>>1 Hour</option>
-    <option value="75" <?php echo isset($weekResults['day4_duration']) && $weekResults['day4_duration'] == '75' ? 'selected="selected"' : '' ?>>1 Hour and 15 Minutes</option>
-    <option value="90" <?php echo isset($weekResults['day4_duration']) && $weekResults['day4_duration'] == '90' ? 'selected="selected"' : '' ?>>1 Hour and 30 Minutes</option>
-    <option value="105" <?php echo isset($weekResults['day4_duration']) && $weekResults['day4_duration'] == '105' ? 'selected="selected"' : '' ?>>1 Hour and 45 Minutes</option>
-    <option value="120" <?php echo isset($weekResults['day4_duration']) && $weekResults['day4_duration'] == '120' ? 'selected="selected"' : '' ?>>2 Hours</option>
-  </select>
-</div>
-<p class="what">
-  <label for="textarea">What practiced:</label>
-<textarea name="day4_notes" class="textarea" rows="2" cols="21"><?php echo isset($weekResults['day4_notes']) ? $weekResults['day4_notes'] : '' ?></textarea></p>
+        <h3 class="day">Wednesday</h3>
+    <div>
+        <p class="time">
+            Time Practiced:
+        </p>
+        <select name="day3_duration"  class="select">
+          <option selected="selected" value="0">Did not practice</option>
+          <option value="15" <?php echo isset($weekResults['day3_duration']) && $weekResults['day3_duration'] == '15' ? 'selected="selected"' : '' ?>>15 Minutes</option>
+          <option value="30" <?php echo isset($weekResults['day3_duration']) && $weekResults['day3_duration'] == '30' ? 'selected="selected"' : '' ?>>30 Minutes</option>
+          <option value="45" <?php echo isset($weekResults['day3_duration']) && $weekResults['day3_duration'] == '45' ? 'selected="selected"' : '' ?>>45 Minutes</option>
+          <option value="60" <?php echo isset($weekResults['day3_duration']) && $weekResults['day3_duration'] == '60' ? 'selected="selected"' : '' ?>>1 Hour</option>
+          <option value="75" <?php echo isset($weekResults['day3_duration']) && $weekResults['day3_duration'] == '75' ? 'selected="selected"' : '' ?>>1 Hour and 15 Minutes</option>
+          <option value="90" <?php echo isset($weekResults['day3_duration']) && $weekResults['day3_duration'] == '90' ? 'selected="selected"' : '' ?>>1 Hour and 30 Minutes</option>
+          <option value="105" <?php echo isset($weekResults['day3_duration']) && $weekResults['day3_duration'] == '105' ? 'selected="selected"' : '' ?>>1 Hour and 45 Minutes</option>
+          <option value="120" <?php echo isset($weekResults['day3_duration']) && $weekResults['day3_duration'] == '120' ? 'selected="selected"' : '' ?>>2 Hours</option>
+        </select>
+    </div>
+        <p class="what">
+          <label for="textarea">What practiced:</label>
+          <textarea name="day3_notes" class="textarea" rows="2" cols="21"><?php echo isset($weekResults['day3_notes']) ? $weekResults['day3_notes'] : '' ?></textarea>
+        </p>
 
 
 
-<h3 class="day">Friday</h3>
-<div>
-  <p class="time">
-    Time Practiced:
-  </p>
-  <select name="day5_duration" class="select">
-    <option value="15" <?php echo isset($weekResults['day5_duration']) && $weekResults['day5_duration'] == '15' ? 'selected="selected"' : '' ?>>15 Minutes</option>
-    <option value="30" <?php echo isset($weekResults['day5_duration']) && $weekResults['day5_duration'] == '30' ? 'selected="selected"' : '' ?>>30 Minutes</option>
-    <option value="45" <?php echo isset($weekResults['day5_duration']) && $weekResults['day5_duration'] == '45' ? 'selected="selected"' : '' ?>>45 Minutes</option>
-    <option value="60" <?php echo isset($weekResults['day5_duration']) && $weekResults['day5_duration'] == '60' ? 'selected="selected"' : '' ?>>1 Hour</option>
-    <option value="75" <?php echo isset($weekResults['day5_duration']) && $weekResults['day5_duration'] == '75' ? 'selected="selected"' : '' ?>>1 Hour and 15 Minutes</option>
-    <option value="90" <?php echo isset($weekResults['day5_duration']) && $weekResults['day5_duration'] == '90' ? 'selected="selected"' : '' ?>>1 Hour and 30 Minutes</option>
-    <option value="105" <?php echo isset($weekResults['day5_duration']) && $weekResults['day5_duration'] == '105' ? 'selected="selected"' : '' ?>>1 Hour and 45 Minutes</option>
-    <option value="120" <?php echo isset($weekResults['day5_duration']) && $weekResults['day5_duration'] == '120' ? 'selected="selected"' : '' ?>>2 Hours</option>
-  </select>
-</div>
-<p class="what">
-  <label for="textarea">What practiced:</label>
-<textarea name="day5_notes" class="textarea" rows="2" cols="21"><?php echo isset($weekResults['day5_notes']) ? $weekResults['day5_notes'] : '' ?></textarea></p>
-
-
-<h3 class="day">Saturday</h3>
-<div>
-  <p class="time">
-    Time Practiced:
-  </p>
-  <select name="day6_duration" class="select">
-    <option value="15" <?php echo isset($weekResults['day6_duration']) && $weekResults['day6_duration'] == '15' ? 'selected="selected"' : '' ?>>15 Minutes</option>
-    <option value="30" <?php echo isset($weekResults['day6_duration']) && $weekResults['day6_duration'] == '30' ? 'selected="selected"' : '' ?>>30 Minutes</option>
-    <option value="45" <?php echo isset($weekResults['day6_duration']) && $weekResults['day6_duration'] == '45' ? 'selected="selected"' : '' ?>>45 Minutes</option>
-    <option value="60" <?php echo isset($weekResults['day6_duration']) && $weekResults['day6_duration'] == '60' ? 'selected="selected"' : '' ?>>1 Hour</option>
-    <option value="75" <?php echo isset($weekResults['day6_duration']) && $weekResults['day6_duration'] == '75' ? 'selected="selected"' : '' ?>>1 Hour and 15 Minutes</option>
-    <option value="90" <?php echo isset($weekResults['day6_duration']) && $weekResults['day6_duration'] == '90' ? 'selected="selected"' : '' ?>>1 Hour and 30 Minutes</option>
-    <option value="105" <?php echo isset($weekResults['day6_duration']) && $weekResults['day6_duration'] == '105' ? 'selected="selected"' : '' ?>>1 Hour and 45 Minutes</option>
-    <option value="120" <?php echo isset($weekResults['day6_duration']) && $weekResults['day6_duration'] == '120' ? 'selected="selected"' : '' ?>>2 Hours</option>
-  </select>
-</div>
-<p class="what">
-  <label for="textarea">What practiced:</label>
-<textarea name="day6_notes" class="textarea" rows="2" cols="21"><?php echo isset($weekResults['day6_notes']) ? $weekResults['day6_notes'] : '' ?></textarea></p>
+        <h3 class="day">Thursday</h3>
+    <div>
+        <p class="time">
+            Time Practiced:
+        </p>
+        <select name="day4_duration"  class="select">
+          <option selected="selected" value="0">Did not practice</option>
+          <option value="15" <?php echo isset($weekResults['day4_duration']) && $weekResults['day4_duration'] == '15' ? 'selected="selected"' : '' ?>>15 Minutes</option>
+          <option value="30" <?php echo isset($weekResults['day4_duration']) && $weekResults['day4_duration'] == '30' ? 'selected="selected"' : '' ?>>30 Minutes</option>
+          <option value="45" <?php echo isset($weekResults['day4_duration']) && $weekResults['day4_duration'] == '45' ? 'selected="selected"' : '' ?>>45 Minutes</option>
+          <option value="60" <?php echo isset($weekResults['day4_duration']) && $weekResults['day4_duration'] == '60' ? 'selected="selected"' : '' ?>>1 Hour</option>
+          <option value="75" <?php echo isset($weekResults['day4_duration']) && $weekResults['day4_duration'] == '75' ? 'selected="selected"' : '' ?>>1 Hour and 15 Minutes</option>
+          <option value="90" <?php echo isset($weekResults['day4_duration']) && $weekResults['day4_duration'] == '90' ? 'selected="selected"' : '' ?>>1 Hour and 30 Minutes</option>
+          <option value="105" <?php echo isset($weekResults['day4_duration']) && $weekResults['day4_duration'] == '105' ? 'selected="selected"' : '' ?>>1 Hour and 45 Minutes</option>
+          <option value="120" <?php echo isset($weekResults['day4_duration']) && $weekResults['day4_duration'] == '120' ? 'selected="selected"' : '' ?>>2 Hours</option>
+        </select>
+    </div>
+        <p class="what">
+            <label for="textarea">What practiced:</label>
+            <textarea name="day4_notes" class="textarea" rows="2" cols="21"><?php echo isset($weekResults['day4_notes']) ? $weekResults['day4_notes'] : '' ?></textarea>
+        </p>
 
 
 
-<h3 class="day">Sunday</h3>
-<div>
-  <p class="time">
-    Time Practiced:
-  </p>
-  <select name="day7_duration" class="select">
-    <option selected="selected" value="0">Did not practice</option>
-    <option value="15" <?php echo isset($weekResults['day7_duration']) && $weekResults['day7_duration'] == '15' ? 'selected="selected"' : '' ?>>15 Minutes</option>
-    <option value="30" <?php echo isset($weekResults['day7_duration']) && $weekResults['day7_duration'] == '30' ? 'selected="selected"' : '' ?>>30 Minutes</option>
-    <option value="45" <?php echo isset($weekResults['day7_duration']) && $weekResults['day7_duration'] == '45' ? 'selected="selected"' : '' ?>>45 Minutes</option>
-    <option value="60" <?php echo isset($weekResults['day7_duration']) && $weekResults['day7_duration'] == '60' ? 'selected="selected"' : '' ?>>1 Hour</option>
-    <option value="75" <?php echo isset($weekResults['day7_duration']) && $weekResults['day7_duration'] == '75' ? 'selected="selected"' : '' ?>>1 Hour and 15 Minutes</option>
-    <option value="90" <?php echo isset($weekResults['day7_duration']) && $weekResults['day7_duration'] == '90' ? 'selected="selected"' : '' ?>>1 Hour and 30 Minutes</option>
-    <option value="105" <?php echo isset($weekResults['day7_duration']) && $weekResults['day7_duration'] == '105' ? 'selected="selected"' : '' ?>>1 Hour and 45 Minutes</option>
-    <option value="120" <?php echo isset($weekResults['day7_duration']) && $weekResults['day7_duration'] == '120' ? 'selected="selected"' : '' ?>>2 Hours</option>
-  </select>
-</div>
-<p class="what">
-  <label for="textarea">What practiced:</label>
-<textarea name="day7_notes" class="textarea" rows="2" cols="21"><?php echo isset($weekResults['day7_notes']) ? $weekResults['day7_notes'] : '' ?></textarea></p>
-<input type="hidden" name="assigned_id" value="<?php echo $_GET['assigned_id'] ?>">
+        <h3 class="day">Friday</h3>
+    <div>
+        <p class="time">
+            Time Practiced:
+        </p>
+        <select name="day5_duration" class="select">
+          <option selected="selected" value="0">Did not practice</option>
+          <option value="15" <?php echo isset($weekResults['day5_duration']) && $weekResults['day5_duration'] == '15' ? 'selected="selected"' : '' ?>>15 Minutes</option>
+          <option value="30" <?php echo isset($weekResults['day5_duration']) && $weekResults['day5_duration'] == '30' ? 'selected="selected"' : '' ?>>30 Minutes</option>
+          <option value="45" <?php echo isset($weekResults['day5_duration']) && $weekResults['day5_duration'] == '45' ? 'selected="selected"' : '' ?>>45 Minutes</option>
+          <option value="60" <?php echo isset($weekResults['day5_duration']) && $weekResults['day5_duration'] == '60' ? 'selected="selected"' : '' ?>>1 Hour</option>
+          <option value="75" <?php echo isset($weekResults['day5_duration']) && $weekResults['day5_duration'] == '75' ? 'selected="selected"' : '' ?>>1 Hour and 15 Minutes</option>
+          <option value="90" <?php echo isset($weekResults['day5_duration']) && $weekResults['day5_duration'] == '90' ? 'selected="selected"' : '' ?>>1 Hour and 30 Minutes</option>
+          <option value="105" <?php echo isset($weekResults['day5_duration']) && $weekResults['day5_duration'] == '105' ? 'selected="selected"' : '' ?>>1 Hour and 45 Minutes</option>
+          <option value="120" <?php echo isset($weekResults['day5_duration']) && $weekResults['day5_duration'] == '120' ? 'selected="selected"' : '' ?>>2 Hours</option>
+        </select>
+    </div>
+        <p class="what">
+            <label for="textarea">What practiced:</label>
+            <textarea name="day5_notes" class="textarea" rows="2" cols="21"><?php echo isset($weekResults['day5_notes']) ? $weekResults['day5_notes'] : '' ?></textarea>
+        </p>
 
-<input name="submit" type="submit" value="SAVE" />
-</form>
+
+        <h3 class="day">Saturday</h3>
+    <div>
+        <p class="time">
+            Time Practiced:
+        </p>
+        <select name="day6_duration" class="select">
+          <option selected="selected" value="0">Did not practice</option>
+          <option value="15" <?php echo isset($weekResults['day6_duration']) && $weekResults['day6_duration'] == '15' ? 'selected="selected"' : '' ?>>15 Minutes</option>
+          <option value="30" <?php echo isset($weekResults['day6_duration']) && $weekResults['day6_duration'] == '30' ? 'selected="selected"' : '' ?>>30 Minutes</option>
+          <option value="45" <?php echo isset($weekResults['day6_duration']) && $weekResults['day6_duration'] == '45' ? 'selected="selected"' : '' ?>>45 Minutes</option>
+          <option value="60" <?php echo isset($weekResults['day6_duration']) && $weekResults['day6_duration'] == '60' ? 'selected="selected"' : '' ?>>1 Hour</option>
+          <option value="75" <?php echo isset($weekResults['day6_duration']) && $weekResults['day6_duration'] == '75' ? 'selected="selected"' : '' ?>>1 Hour and 15 Minutes</option>
+          <option value="90" <?php echo isset($weekResults['day6_duration']) && $weekResults['day6_duration'] == '90' ? 'selected="selected"' : '' ?>>1 Hour and 30 Minutes</option>
+          <option value="105" <?php echo isset($weekResults['day6_duration']) && $weekResults['day6_duration'] == '105' ? 'selected="selected"' : '' ?>>1 Hour and 45 Minutes</option>
+          <option value="120" <?php echo isset($weekResults['day6_duration']) && $weekResults['day6_duration'] == '120' ? 'selected="selected"' : '' ?>>2 Hours</option>
+        </select>
+    </div>
+        <p class="what">
+            <label for="textarea">What practiced:</label>
+            <textarea name="day6_notes" class="textarea" rows="2" cols="21"><?php echo isset($weekResults['day6_notes']) ? $weekResults['day6_notes'] : '' ?></textarea>
+        </p>
+
+
+
+        <h3 class="day">Sunday</h3>
+    <div>
+        <p class="time">
+          Time Practiced:
+        </p>
+        <select name="day7_duration" class="select">
+          <option selected="selected" value="0">Did not practice</option>
+          <option value="15" <?php echo isset($weekResults['day7_duration']) && $weekResults['day7_duration'] == '15' ? 'selected="selected"' : '' ?>>15 Minutes</option>
+          <option value="30" <?php echo isset($weekResults['day7_duration']) && $weekResults['day7_duration'] == '30' ? 'selected="selected"' : '' ?>>30 Minutes</option>
+          <option value="45" <?php echo isset($weekResults['day7_duration']) && $weekResults['day7_duration'] == '45' ? 'selected="selected"' : '' ?>>45 Minutes</option>
+          <option value="60" <?php echo isset($weekResults['day7_duration']) && $weekResults['day7_duration'] == '60' ? 'selected="selected"' : '' ?>>1 Hour</option>
+          <option value="75" <?php echo isset($weekResults['day7_duration']) && $weekResults['day7_duration'] == '75' ? 'selected="selected"' : '' ?>>1 Hour and 15 Minutes</option>
+          <option value="90" <?php echo isset($weekResults['day7_duration']) && $weekResults['day7_duration'] == '90' ? 'selected="selected"' : '' ?>>1 Hour and 30 Minutes</option>
+          <option value="105" <?php echo isset($weekResults['day7_duration']) && $weekResults['day7_duration'] == '105' ? 'selected="selected"' : '' ?>>1 Hour and 45 Minutes</option>
+          <option value="120" <?php echo isset($weekResults['day7_duration']) && $weekResults['day7_duration'] == '120' ? 'selected="selected"' : '' ?>>2 Hours</option>
+        </select>
+    </div>
+        <p class="what">
+            <label for="textarea">What practiced:</label>
+            <textarea name="day7_notes" class="textarea" rows="2" cols="21"><?php echo isset($weekResults['day7_notes']) ? $weekResults['day7_notes'] : '' ?></textarea></br>
+        </p>
+        <input type="hidden" name="assigned_id" value="<?php echo $_GET['assigned_id'] ?>">
+
+        <input id="lastSave" name="submit" type="submit" value="SAVE" />
+      </form>
+      <button onclick="clickFunction()">PRINT</button>
 
 <?php else: ?>
 
-  <p class="select">Select a week to begin</p>
+    <p class="select">Select a week to begin</p>
 
 <?php endif ?>
 
@@ -321,6 +336,30 @@
       });
     });
 
+    function clickFunction() {
+      window.print();
+    };
+
+
+
+
+    $(document).on('change', '.select', function(){
+    var total = 0;
+    $('.select').each(function() {
+        total += parseInt($(this).val());
+    });
+    $('#sum').val(total)
+});
+
+
+  function keepSum() {
+    var total = 0;
+    $('.select').each(function() {
+        total += parseInt($(this).val());
+    });
+    $('#sum').val(total)
+  }
+  window.onload=keepSum;
 
   </script>
 
