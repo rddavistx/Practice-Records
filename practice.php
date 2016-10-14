@@ -107,7 +107,7 @@
 
         $stmt->execute();
         echo '<h3 id="saved">Practice Record Saved ! </h3>';
-        header( "refresh:5; url=index.php" );
+        header( "refresh:2; url=index.php" );
     }
 ?>
 
