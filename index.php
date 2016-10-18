@@ -28,7 +28,7 @@ require_once 'bootstrap.php'
     </div>
       <form action="practice.php" method="get">
 
-        Student ID: <input type="text" name="assigned_id">
+        Student ID:<input type="text" name="assigned_id">
         <input type="submit">
       </form>
       <div class="bottom">
