@@ -12,8 +12,8 @@ function format_print_r($output) {
   echo '</pre>';
 }
 
-$dotenv = new Dotenv\Dotenv(__DIR__);
-$dotenv->load();
+// $dotenv = new Dotenv\Dotenv(__DIR__);
+// $dotenv->load();
 
 // echo 'ENV database:' . $_ENV['DATABASE_NAME'];
 
