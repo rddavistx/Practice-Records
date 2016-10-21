@@ -4,7 +4,6 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-require('dotenv').config({silent: true})
 // require __DIR__ . '/vendor/autoload.php';
 
 function format_print_r($output) {
