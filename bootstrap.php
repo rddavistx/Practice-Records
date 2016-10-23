@@ -27,23 +27,13 @@ $username = $url["user"];
 $password = $url["pass"];
 $db = substr($url["path"], 1);
 
-// $conn = new mysqli($server, $username, $password, $db);
+$conn = new mysqli($server, $username, $password, $db);
 
 
 
 
 
-$dbh = new PDO('mysql:host=' . $_ENV['DATABASE_HOST'] . ';dbname=' . $_ENV['DATABASE_NAME'], $_ENV['DATABASE_USER'], $_ENV['DATABASE_PASSWORD']);
-//
-// $cleardb_url = parse_url(getenv("CLEARDB_DATABASE_URL"));
-// $cleardb_server = $cleardb_url["host"];
-// $cleardb_username = $cleardb_url["user"];
-// $cleardb_password = $cleardb_url["pass"];
-// $cleardb_db = substr($cleardb_url["path"], 1);
-//
-// $db['default']['hostname'] = $cleardb_server;
-// $db['default']['username'] = $cleardb_username;
-// $db['default']['password'] = $cleardb_password;
-// $db['default']['database'] = $cleardb_db;
+// $dbh = new PDO('mysql:host=' . $_ENV['DATABASE_HOST'] . ';dbname=' . $_ENV['DATABASE_NAME'], $_ENV['DATABASE_USER'], $_ENV['DATABASE_PASSWORD']);
+
 
  ?>
