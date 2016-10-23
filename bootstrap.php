@@ -21,10 +21,10 @@ function format_print_r($output) {
 
 $url = parse_url(getenv("CLEARDB_DATABASE_URL"));
 
-$server = $url["host"];
-$username = $url["user"];
-$password = $url["pass"];
-$db = substr($url["path"], 1);
+$server = $url["DATABASE_HOST"];
+$username = $url["DATABASE_USER"];
+$password = $url["DATABASE_PASSWORD"];
+$db = substr($url["DATABASE_NAME"], 1);
 
 // $conn = new mysqli($server, $username, $password, $db);
 
