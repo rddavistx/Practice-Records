@@ -7,7 +7,7 @@
    SELECT id, start_date
    FROM weeks
    ";
-   $stmt = $conn->prepare($sql);
+   $stmt = $dbh->prepare($sql);
    $stmt->execute();
 
    $weeks = $stmt->fetchAll(PDO::FETCH_ASSOC);
