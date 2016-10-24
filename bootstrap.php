@@ -19,14 +19,14 @@ function format_print_r($output) {
 
 
 
-$url = parse_url(getenv("CLEARDB_DATABASE_URL"));
+// $url = parse_url(getenv("CLEARDB_DATABASE_URL"));
+//
+// $server = $_ENV["DATABASE_HOST"];
+// $username = $_ENV["DATABASE_USER"];
+// $password = $_ENV["DATABASE_PASSWORD"];
+// $db = substr($_ENV["DATABASE_NAME"], 1);
 
-$server = $url["DATABASE_HOST"];
-$username = $url["DATABASE_USER"];
-$password = $url["DATABASE_PASSWORD"];
-$db = substr($url["DATABASE_NAME"], 1);
-
-// $conn = new mysqli($server, $username, $password, $db);
+// $dbh = new mysqli($server, $username, $password, $db);
 
 
 
