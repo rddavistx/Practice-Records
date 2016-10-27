@@ -15,18 +15,16 @@ function format_print_r($output) {
 // $dotenv = new Dotenv\Dotenv(__DIR__);
 // $dotenv->load();
 
-// echo 'ENV database:' . $_ENV['DATABASE_NAME'];
 
 
 
-// $url = parse_url(getenv("CLEARDB_DATABASE_URL"));
+$url = parse_url(getenv("CLEARDB_DATABASE_URL"));
 //
 // $server = $_ENV["DATABASE_HOST"];
 // $username = $_ENV["DATABASE_USER"];
 // $password = $_ENV["DATABASE_PASSWORD"];
 // $db = substr($_ENV["DATABASE_NAME"], 1);
 
-// $dbh = new mysqli($server, $username, $password, $db);
 
 
 
