@@ -26,11 +26,24 @@ require_once 'bootstrap.php'
     <div class="signIn">
         <h2>Please sign in</h2>
     </div>
-      <form action="practice.php" method="get">
 
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+    <form action="student.php" method="post">
+      Teacher ID:<input type="text" name="teacher_id">
+      <input type="submit">
+    </form>
+        </div>
+
+        <div class="col-md-6">
+      <form action="practice.php" method="get">
         Student ID:<input type="text" name="assigned_id">
         <input type="submit">
       </form>
+        </div>
+      </div>
+    </div>
       <div class="bottom">
         <h3 id="instructions">An online tool for students and directors to track an individual's practice times and material practiced.</h3>
     </div>
