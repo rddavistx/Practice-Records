@@ -4,6 +4,19 @@
 
 ?>
 
+<?php $sql = "
+   SELECT *
+   FROM instructors
+   ";
+   $stmt = $dbh->prepare($sql);
+   $stmt->execute();
+
+   $weeks = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+   $output = '';
+?>
+
+
 
 
 <!DOCTYPE html>
