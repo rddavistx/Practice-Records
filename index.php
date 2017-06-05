@@ -29,12 +29,12 @@ require_once 'bootstrap.php'
 
     <div class="container">
       <div class="row">
-        <div class="col-md-6">
+        <!-- <div class="col-md-6">
     <form action="student.php" method="post">
       Teacher ID:<input type="text" name="teacher_id">
       <input type="submit">
     </form>
-        </div>
+        </div> -->
 
         <div class="col-md-6">
       <form action="practice.php" method="get">

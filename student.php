@@ -4,7 +4,7 @@
 
 ?>
 
-<?php $sql = "
+<!-- <?php $sql = "
    SELECT *
    FROM instructors
    ";
@@ -14,7 +14,7 @@
    $weeks = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
    $output = '';
-?>
+?> -->
 
 
 
