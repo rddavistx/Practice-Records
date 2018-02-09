@@ -21,7 +21,7 @@ require_once 'bootstrap.php'
   <body>
     <div class="border">
     <div class="welcome">
-    <h1>Welcome to Online Practice Record !</h1>
+    <h1>Welcome to Online Practice Record!</h1>
     </div>
     <div class="signIn">
         <h2>Please sign in</h2>

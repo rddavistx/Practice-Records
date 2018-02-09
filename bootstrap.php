@@ -30,7 +30,18 @@ function format_print_r($output) {
 
 
 
-$dbh = new PDO('mysql:host=' . $_ENV['DATABASE_HOST'] . ';dbname=' . $_ENV['DATABASE_NAME'], $_ENV['DATABASE_USER'], $_ENV['DATABASE_PASSWORD']);
+$dbh = new PDO('mysqli:host=' . $_ENV['DATABASE_HOST'] . ';dbname=' . $_ENV['DATABASE_NAME'], $_ENV['DATABASE_USER'], $_ENV['DATABASE_PASSWORD']);
+
+// $con=mysqli_connect("localhost","root","Davis1988")
+// or die("<p>Error connecting to database: " .
+// mysqli_error() . "</p>");
+
+
+
+mysqli_select_db($con,"practice_records")
+or die("<p>Error selecting the database php_db: " . mysqli_error() . "</p>");
+
+
 
 
  ?>
